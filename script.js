@@ -11,7 +11,7 @@ document.querySelectorAll(".nav-links a").forEach(a => {
 document.getElementById("discordBtn").addEventListener("click", (e) => {
   e.preventDefault();
   if (DISCORD_INVITE.includes("discord.gg/MyPnnVwbMH")) {
-    alert("Bitte trage euren echten Discord-Einladungslink in script.js ein.");
+    alert("Ups, das sollte so nicht sein.");
     return;
   }
   window.open(DISCORD_INVITE, "_blank", "noopener,noreferrer");
