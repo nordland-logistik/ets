@@ -1,4 +1,4 @@
-const DISCORD_INVITE = "https://discord.gg/DEIN-LINK-HIER";
+const DISCORD_INVITE = "discord.gg/MyPnnVwbMH";
 
 document.querySelector(".menu-btn").addEventListener("click", () => {
   document.body.classList.toggle("menu-open");
