@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <!-- defer stellt sicher, dass das DOM fertig geladen ist -->
+  <script src="script.js" defer></script>
 </head>
 <body>
 <header class="site-header">
@@ -137,8 +139,9 @@
     <h2>Bereit für<br><span>den Neustart?</span></h2>
     <p>Wir suchen keine perfekten Statistiken. Wir suchen Fahrer, die Bock auf ETS2, gemeinsames Fahren und eine wachsende Community haben.</p>
     <div class="apply-steps"><span>01 Bewerbung</span><i>→</i><span>02 Probefahrt</span><i>→</i><span>03 Probezeit</span><i>→</i><span>04 Nordland</span></div>
-    <a class="btn btn-primary big" href="#" id="discordBtn">Discord beitreten</a>
-    <small>Ersetze den Discord-Link in script.js durch euren echten Einladungslink.</small>
+    
+    <!-- Discord Button -->
+    <a class="btn btn-primary big" href="https://discord.gg/MyPnnVwbMH" target="_blank" rel="noopener noreferrer" id="discordBtn">Discord beitreten</a>
   </div>
 </section>
 </main>
@@ -150,6 +153,5 @@
     <span>ETS2 · SPEDV · COMMUNITY</span>
   </div>
 </footer>
-<script src="script.js"></script>
 </body>
 </html>
