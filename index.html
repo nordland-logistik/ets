@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <!-- defer stellt sicher, dass das DOM fertig geladen ist -->
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -19,6 +18,7 @@
     <button class="menu-btn" aria-label="Menü öffnen">☰</button>
     <div class="nav-links">
       <a href="#ueber-uns">Über uns</a>
+      <a href="#live-stats">Live-Statistik</a>
       <a href="#divisionen">Divisionen</a>
       <a href="#karriere">Karriere</a>
       <a href="#fuhrpark">Fuhrpark</a>
@@ -53,6 +53,64 @@
     <div class="lead">
       <p>Die Nordland Logistik ist eine neu aufgestellte virtuelle Spedition für Euro Truck Simulator 2 und das SpedV-Netzwerk. Unser Ziel ist eine aktive, faire und starke Community, in der man gemeinsam fährt, sich gegenseitig unterstützt und trotzdem professionell unterwegs ist.</p>
       <p>Egal ob Einsteiger oder erfahrener Fahrer: Bei uns soll jeder seinen Platz finden. Reallife geht vor, und eine Pause bedeutet nicht, dass alles Erreichte verloren ist.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================= -->
+<!-- NORDLAND LIVE-TELEMETRIE & STATISTIK SECTION            -->
+<!-- ======================================================= -->
+<section id="live-stats" class="section dark">
+  <div class="container">
+    <div class="section-head" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 15px; margin-bottom: 30px;">
+      <div>
+        <div class="eyebrow">LIVE-TELEMETRIE</div>
+        <h2>Nordland <span>Live Statistics</span></h2>
+      </div>
+      <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; color: #00E5FF; font-weight: 700; background: rgba(0, 229, 255, 0.1); padding: 8px 16px; border-radius: 20px; border: 1px solid #00E5FF;">
+        <span style="width: 8px; height: 8px; background: #00E5FF; border-radius: 50%; box-shadow: 0 0 8px #00E5FF; display: inline-block;"></span>
+        LIVE • <span id="nd-month">Lade...</span>
+      </div>
+    </div>
+
+    <!-- 4 KPI Boxen -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 35px;">
+      <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 20px; text-align: center;">
+        <div style="font-size: 0.8rem; color: #8B949E; text-transform: uppercase; font-weight: 600; margin-bottom: 6px;">🚛 Aktive Fahrer</div>
+        <div id="nd-drivers" style="font-size: 2rem; font-weight: 800; color: #00E5FF; font-family: 'Oswald', sans-serif;">-</div>
+      </div>
+      <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 20px; text-align: center;">
+        <div style="font-size: 0.8rem; color: #8B949E; text-transform: uppercase; font-weight: 600; margin-bottom: 6px;">📦 Aufträge Monat</div>
+        <div id="nd-orders" style="font-size: 2rem; font-weight: 800; color: #00E5FF; font-family: 'Oswald', sans-serif;">-</div>
+      </div>
+      <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 20px; text-align: center;">
+        <div style="font-size: 0.8rem; color: #8B949E; text-transform: uppercase; font-weight: 600; margin-bottom: 6px;">🛣️ Kilometer gesamt</div>
+        <div id="nd-km" style="font-size: 2rem; font-weight: 800; color: #00E5FF; font-family: 'Oswald', sans-serif;">-</div>
+      </div>
+      <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 20px; text-align: center;">
+        <div style="font-size: 0.8rem; color: #8B949E; text-transform: uppercase; font-weight: 600; margin-bottom: 6px;">💰 Speditionsumsatz</div>
+        <div id="nd-rev" style="font-size: 2rem; font-weight: 800; color: #00E5FF; font-family: 'Oswald', sans-serif;">-</div>
+      </div>
+    </div>
+
+    <!-- Top 5 Tabelle -->
+    <h3 style="font-size: 1.3rem; margin-bottom: 15px; text-transform: uppercase; font-family: 'Oswald', sans-serif; letter-spacing: 1px;">🏆 Top 5 Fahrer des Monats</h3>
+    <div style="overflow-x: auto; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); background: rgba(10, 25, 47, 0.6);">
+      <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+          <tr style="background: rgba(0, 229, 255, 0.1); color: #00E5FF; font-size: 0.8rem; text-transform: uppercase;">
+            <th style="padding: 14px 18px;">Platz</th>
+            <th style="padding: 14px 18px;">Fahrer</th>
+            <th style="padding: 14px 18px;">Touren</th>
+            <th style="padding: 14px 18px;">Gefahrene KM</th>
+            <th style="padding: 14px 18px;">Monatsumsatz</th>
+            <th style="padding: 14px 18px;">Prämie</th>
+          </tr>
+        </thead>
+        <tbody id="nd-table-body">
+          <tr><td colspan="6" style="padding: 20px; text-align: center; color: #8B949E;">Lade Live-Daten...</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
@@ -153,5 +211,51 @@
     <span>ETS2 · SPEDV · COMMUNITY</span>
   </div>
 </footer>
+
+<!-- SCRIPT FÜR DAS LIVE DASHBOARD -->
+<script>
+  // HIER DEINE GOOGLE APPS SCRIPT URL EINFÜGEN:
+  const NORDLAND_API_URL = "DEINE_APPS_SCRIPT_URL_HIER";
+
+  async function fetchNordlandStats() {
+    if (NORDLAND_API_URL === "https://script.google.com/macros/s/AKfycbxqdA6eC3MAtJaWVx2kfmpM90ptE7F4wVzPSoi0jRW9rjvuIDnwZxuS7GVLdnDdrcynfA/exec") return;
+
+    try {
+      const res = await fetch(NORDLAND_API_URL);
+      const data = await res.json();
+
+      document.getElementById('nd-month').textContent = data.month || "08.2026";
+      document.getElementById('nd-drivers').textContent = data.active_drivers;
+      document.getElementById('nd-orders').textContent = data.total_orders;
+      document.getElementById('nd-km').textContent = data.total_km;
+      document.getElementById('nd-rev').textContent = data.total_revenue;
+
+      const tbody = document.getElementById('nd-table-body');
+      tbody.innerHTML = '';
+
+      const medals = ['🥇 Platz 1', '🥈 Platz 2', '🥉 Platz 3', '4. Platz', '5. Platz'];
+      const colors = ['#FFD700', '#E0E0E0', '#CD7F32', '#FFF', '#FFF'];
+
+      data.top_drivers.forEach((d, idx) => {
+        const tr = document.createElement('tr');
+        tr.style.borderBottom = "1px solid rgba(255, 255, 255, 0.05)";
+        tr.innerHTML = `
+          <td style="padding: 12px 18px; color: ${colors[idx]}; font-weight: 700;">${medals[idx]}</td>
+          <td style="padding: 12px 18px; font-weight: 600; color: #FFF;">${d.name}</td>
+          <td style="padding: 12px 18px;">${d.auftraege}</td>
+          <td style="padding: 12px 18px; font-weight: 700;">${d.km}</td>
+          <td style="padding: 12px 18px;">${d.umsatz}</td>
+          <td style="padding: 12px 18px; color: #00E5FF; font-weight: 700;">${d.bonus}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    } catch (e) {
+      console.error("Fehler beim Laden der Live-Statistiken:", e);
+    }
+  }
+
+  fetchNordlandStats();
+  setInterval(fetchNordlandStats, 60000); // Aktualisiert alle 60 Sekunden
+</script>
 </body>
 </html>
