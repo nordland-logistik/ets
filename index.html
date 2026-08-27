@@ -69,7 +69,7 @@
       </div>
       <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; color: #00E5FF; font-weight: 700; background: rgba(0, 229, 255, 0.1); padding: 8px 16px; border-radius: 20px; border: 1px solid #00E5FF;">
         <span style="width: 8px; height: 8px; background: #00E5FF; border-radius: 50%; box-shadow: 0 0 8px #00E5FF; display: inline-block;"></span>
-        LIVE • <span id="nd-month">Lade...</span>
+        LIVE • <span id="nd-month">08.2026</span>
       </div>
     </div>
 
@@ -214,48 +214,83 @@
 
 <!-- SCRIPT FÜR DAS LIVE DASHBOARD -->
 <script>
-  // HIER DEINE GOOGLE APPS SCRIPT URL EINFÜGEN:
-  const NORDLAND_API_URL = "DEINE_APPS_SCRIPT_URL_HIER";
+  const NORDLAND_API_URL = "https://script.google.com/macros/s/AKfycbx082o8GNgtdgjCjVGBeBy8QyDWwOboH5QOP33Agh2asI3HAJnPM8mmydwJ_sy659kWWw/exec";
+
+  function formatKm(num) {
+    if (typeof num === "string" && num.includes("km")) return num;
+    if (isNaN(num)) return num || "0 km";
+    return Number(num).toLocaleString('de-DE') + " km";
+  }
+
+  function formatEur(num) {
+    if (typeof num === "string" && num.includes("€")) return num;
+    if (isNaN(num)) return num || "0 €";
+    return Number(num).toLocaleString('de-DE') + " €";
+  }
 
   async function fetchNordlandStats() {
-    if (NORDLAND_API_URL === "https://script.google.com/macros/s/AKfycbx082o8GNgtdgjCjVGBeBy8QyDWwOboH5QOP33Agh2asI3HAJnPM8mmydwJ_sy659kWWw/exec") return;
-
     try {
-      const res = await fetch(NORDLAND_API_URL);
+      const res = await fetch(NORDLAND_API_URL, {
+        method: "GET",
+        mode: "cors",
+        redirect: "follow"
+      });
+
+      if (!res.ok) {
+        throw new Error("HTTP-Fehler: " + res.status);
+      }
+
       const data = await res.json();
 
-      document.getElementById('nd-month').textContent = data.month || "08.2026";
-      document.getElementById('nd-drivers').textContent = data.active_drivers;
-      document.getElementById('nd-orders').textContent = data.total_orders;
-      document.getElementById('nd-km').textContent = data.total_km;
-      document.getElementById('nd-rev').textContent = data.total_revenue;
+      let displayMonth = "08.2026";
+      if (data.month) {
+        const d = new Date(data.month);
+        if (!isNaN(d.getTime())) {
+          displayMonth = String(d.getMonth() + 1).padStart(2, '0') + "." + d.getFullYear();
+        } else {
+          displayMonth = data.month;
+        }
+      }
+
+      document.getElementById('nd-month').textContent = displayMonth;
+      document.getElementById('nd-drivers').textContent = data.active_drivers || "0";
+      document.getElementById('nd-orders').textContent = Number(data.total_orders || 0).toLocaleString('de-DE');
+      document.getElementById('nd-km').textContent = formatKm(data.total_km);
+      document.getElementById('nd-rev').textContent = formatEur(data.total_revenue);
 
       const tbody = document.getElementById('nd-table-body');
       tbody.innerHTML = '';
 
       const medals = ['🥇 Platz 1', '🥈 Platz 2', '🥉 Platz 3', '4. Platz', '5. Platz'];
-      const colors = ['#FFD700', '#E0E0E0', '#CD7F32', '#FFF', '#FFF'];
+      const colors = ['#FFD700', '#E0E0E0', '#CD7F32', '#FFFFFF', '#FFFFFF'];
+
+      if (!data.top_drivers || data.top_drivers.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="padding: 20px; text-align: center; color: #8B949E;">Aktuell keine Fahrten in diesem Monat.</td></tr>';
+        return;
+      }
 
       data.top_drivers.forEach((d, idx) => {
         const tr = document.createElement('tr');
         tr.style.borderBottom = "1px solid rgba(255, 255, 255, 0.05)";
         tr.innerHTML = `
-          <td style="padding: 12px 18px; color: ${colors[idx]}; font-weight: 700;">${medals[idx]}</td>
+          <td style="padding: 12px 18px; color: ${colors[idx] || '#FFF'}; font-weight: 700;">${medals[idx] || (idx + 1) + '. Platz'}</td>
           <td style="padding: 12px 18px; font-weight: 600; color: #FFF;">${d.name}</td>
           <td style="padding: 12px 18px;">${d.auftraege}</td>
-          <td style="padding: 12px 18px; font-weight: 700;">${d.km}</td>
-          <td style="padding: 12px 18px;">${d.umsatz}</td>
-          <td style="padding: 12px 18px; color: #00E5FF; font-weight: 700;">${d.bonus}</td>
+          <td style="padding: 12px 18px; font-weight: 700;">${formatKm(d.km)}</td>
+          <td style="padding: 12px 18px;">${formatEur(d.umsatz)}</td>
+          <td style="padding: 12px 18px; color: #00E5FF; font-weight: 700;">${formatEur(d.bonus)}</td>
         `;
         tbody.appendChild(tr);
       });
-    } catch (e) {
-      console.error("Fehler beim Laden der Live-Statistiken:", e);
+
+    } catch (err) {
+      console.error("Fehler beim Laden der Live-Daten:", err);
+      document.getElementById('nd-month').textContent = "08.2026";
     }
   }
 
   fetchNordlandStats();
-  setInterval(fetchNordlandStats, 60000); // Aktualisiert alle 60 Sekunden
+  setInterval(fetchNordlandStats, 60000);
 </script>
 </body>
 </html>
