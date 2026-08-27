@@ -93,7 +93,7 @@
       </div>
     </div>
 
-    <!-- Top 5 Tabelle -->
+    <!-- Top 5 Tabelle ohne Prämie -->
     <h3 style="font-size: 1.3rem; margin-bottom: 15px; text-transform: uppercase; font-family: 'Oswald', sans-serif; letter-spacing: 1px;">🏆 Top 5 Fahrer des Monats</h3>
     <div style="overflow-x: auto; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); background: rgba(10, 25, 47, 0.6);">
       <table style="width: 100%; border-collapse: collapse; text-align: left;">
@@ -104,11 +104,10 @@
             <th style="padding: 14px 18px;">Touren</th>
             <th style="padding: 14px 18px;">Gefahrene KM</th>
             <th style="padding: 14px 18px;">Monatsumsatz</th>
-            <th style="padding: 14px 18px;">Prämie</th>
           </tr>
         </thead>
         <tbody id="nd-table-body">
-          <tr><td colspan="6" style="padding: 20px; text-align: center; color: #8B949E;">Lade Live-Daten...</td></tr>
+          <tr><td colspan="5" style="padding: 20px; text-align: center; color: #8B949E;">Lade Live-Daten...</td></tr>
         </tbody>
       </table>
     </div>
@@ -265,7 +264,7 @@
       const colors = ['#FFD700', '#E0E0E0', '#CD7F32', '#FFFFFF', '#FFFFFF'];
 
       if (!data.top_drivers || data.top_drivers.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="padding: 20px; text-align: center; color: #8B949E;">Aktuell keine Fahrten in diesem Monat.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" style="padding: 20px; text-align: center; color: #8B949E;">Aktuell keine Fahrten in diesem Monat.</td></tr>';
         return;
       }
 
@@ -278,7 +277,6 @@
           <td style="padding: 12px 18px;">${d.auftraege}</td>
           <td style="padding: 12px 18px; font-weight: 700;">${formatKm(d.km)}</td>
           <td style="padding: 12px 18px;">${formatEur(d.umsatz)}</td>
-          <td style="padding: 12px 18px; color: #00E5FF; font-weight: 700;">${formatEur(d.bonus)}</td>
         `;
         tbody.appendChild(tr);
       });
